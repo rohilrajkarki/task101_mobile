@@ -1,4 +1,12 @@
 import { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  Button,
+  ScrollView,
+} from "react-native";
 
 const FinePage = () => {
   const [amount, setAmount] = useState(0);
@@ -28,62 +36,81 @@ const FinePage = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl p-6 rounded-2xl shadow-xl border border-gray-700 bg-gray-900 mx-auto mt-10 space-y-6 text-gray-100">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <h2 className="text-lg font-semibold">User Name</h2>
-        <span>
-          Total Fines: <strong>${totalAmount}</strong>
-        </span>
-      </div>
+    <ScrollView className="flex-1 bg-gray-900 px-5 pt-10">
+      <View className="bg-gray-800 rounded-2xl px-6 py-8 space-y-8 shadow-md border border-gray-700">
+        {/* Header */}
+        <View className="items-center space-y-1">
+          <Text className="text-xl font-bold text-white">Welcome, User</Text>
+          <Text className="text-base text-gray-300">
+            Total Fines:{" "}
+            <Text className="text-green-400 font-bold">${totalAmount}</Text>
+          </Text>
+        </View>
 
-      {/* Latest Fine Details */}
-      <div className="p-4 border border-gray-600 rounded-lg shadow-sm text-gray-200">
-        <p className="text-sm">Latest fines details will appear here.</p>
-      </div>
+        {/* Latest Fine Info */}
+        <View className="bg-gray-700 rounded-lg p-4">
+          <Text className="text-sm text-gray-300">
+            📋 Latest fines details will appear here.
+          </Text>
+        </View>
 
-      {/* Fine Adjustment Buttons */}
-      <div className="flex justify-between">
-        <button
-          className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-5 rounded-lg shadow"
-          onClick={() => addSubAmount("add")}
-        >
-          +5
-        </button>
-        <strong>Update {amount}</strong>
-        <button
-          className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-5 rounded-lg shadow"
-          onClick={() => addSubAmount()}
-        >
-          -5
-        </button>
-      </div>
+        {/* Add/Subtract Buttons */}
+        <View className="flex-row justify-center space-x-8">
+          <Pressable
+            className="bg-green-600 px-6 py-3 rounded-full"
+            onPress={() => addSubAmount("add")}
+          >
+            <Text className="text-white text-lg font-bold">+5</Text>
+          </Pressable>
 
-      {/* Manual Fine Input */}
-      <div className="flex items-center space-x-3">
-        <label htmlFor="manualFine" className="font-medium text-gray-200">
-          Enter amount:
-        </label>
-        <input
-          id="manualFine"
-          type="number"
-          className="w-32 px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="e.g. 10"
-          value={manualAmount}
-          onChange={(e) => setManualAmount(Number(e.target.value))}
-        />
-      </div>
+          <Pressable
+            className="bg-red-600 px-6 py-3 rounded-full"
+            onPress={() => addSubAmount()}
+          >
+            <Text className="text-white text-lg font-bold">-5</Text>
+          </Pressable>
+        </View>
 
-      <button onClick={updateAmount}>Confirm</button>
+        {/* Display Pending Update */}
+        {amount !== 0 && (
+          <Text className="text-center text-yellow-400 text-base font-semibold">
+            Pending Update:{" "}
+            {amount > 0 ? `+$${amount}` : `-$${Math.abs(amount)}`}
+          </Text>
+        )}
 
-      {/* Upcoming Tasks */}
-      <div className="pt-4 border-t border-gray-700">
-        <h3 className="text-md font-semibold mb-2">Upcoming Tasks</h3>
-        <p className="text-gray-400 text-sm">
-          List of tasks to complete will be displayed here.
-        </p>
-      </div>
-    </div>
+        {/* Manual Input */}
+        <View className="space-y-2">
+          <Text className="text-white font-medium">Manual Fine Entry</Text>
+          <View className="flex-row space-x-3">
+            <TextInput
+              keyboardType="numeric"
+              placeholder="Enter amount"
+              placeholderTextColor="#9ca3af"
+              value={manualAmount.toString()}
+              onChangeText={(text) => setManualAmount(Number(text))}
+              className="flex-1 bg-gray-700 text-white px-4 py-3 rounded-md border border-gray-600"
+            />
+            <Pressable
+              onPress={updateAmount}
+              className="bg-blue-600 px-5 py-3 rounded-md"
+            >
+              <Text className="text-white font-medium">Confirm</Text>
+            </Pressable>
+          </View>
+        </View>
+
+        {/* Tasks Section */}
+        <View className="pt-6 border-t border-gray-700">
+          <Text className="text-white text-lg font-semibold mb-2">
+            Upcoming Tasks
+          </Text>
+          <Text className="text-gray-400 text-sm">
+            📝 List of tasks to complete will be displayed here.
+          </Text>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 

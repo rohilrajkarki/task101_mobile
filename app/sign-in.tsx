@@ -11,21 +11,32 @@ import {
 
 import { Redirect } from "expo-router";
 import images from "@/constants/images";
+import { useAppwrite } from "./lib/useAppwrite";
+import { getCurrentUser, login } from "./lib/appwrite";
+import icons from "@/constants/icons";
 
 const Auth = () => {
-  // const { refetch, loading, isLogged } = useGlobalContext();
+  const {
+    data: user,
+    loading,
+    refetch,
+  } = useAppwrite({
+    fn: getCurrentUser,
+  });
 
   // if (!loading && isLogged) return <Redirect href="/" />;
 
   const handleLogin = async () => {
-    // const result = await login();
-    // if (result) {
-    //   refetch();
-    // } else {
-    //   Alert.alert("Error", "Failed to login");
-    // }
+    const result = await login();
+    if (result) {
+      refetch();
+      console.log(result);
+    } else {
+      Alert.alert("Error", "Failed to login");
+    }
   };
 
+  console.log("user =>", user);
   return (
     <SafeAreaView className="bg-white h-full">
       <ScrollView
@@ -59,7 +70,7 @@ const Auth = () => {
           >
             <View className="flex flex-row items-center justify-center">
               <Image
-                // source={icons.google}
+                source={icons.google}
                 className="w-5 h-5"
                 resizeMode="contain"
               />
