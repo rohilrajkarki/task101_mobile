@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import { Redirect } from "expo-router";
+import images from "@/constants/images";
 
 const Auth = () => {
   // const { refetch, loading, isLogged } = useGlobalContext();
@@ -33,13 +34,13 @@ const Auth = () => {
         }}
       >
         <Image
-          // source={images.onboarding}
+          source={images.onboarding}
           className="w-full h-4/6"
           resizeMode="contain"
         />
 
         <View className="px-10">
-          <Text className="text-base text-center uppercase font-rubik text-black-200">
+          <Text className="text-base text-center uppercase ">
             Welcome To Real Scout
           </Text>
 

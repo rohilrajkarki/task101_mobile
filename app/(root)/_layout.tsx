@@ -1,7 +1,7 @@
 import { Redirect, Slot } from "expo-router";
 
 export default function AppLayout() {
-  const isLogged = true;
+  const isLogged = false;
 
   if (!isLogged) {
     return <Redirect href="/sign-in" />;
