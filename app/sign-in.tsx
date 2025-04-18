@@ -1,42 +1,40 @@
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import {
-  Alert,
+  View,
+  Text,
   Image,
   ScrollView,
-  Text,
+  Button,
   TouchableOpacity,
-  View,
+  Alert,
 } from "react-native";
-
-import { Redirect } from "expo-router";
+import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import images from "@/constants/images";
-import { useAppwrite } from "./lib/useAppwrite";
-import { getCurrentUser, login } from "./lib/appwrite";
 import icons from "@/constants/icons";
+import { login, logout } from "./lib/appwrite";
+import { useGlobalContext } from "./lib/global-provider";
+import { Redirect } from "expo-router";
 
-const Auth = () => {
-  const {
-    data: user,
-    loading,
-    refetch,
-  } = useAppwrite({
-    fn: getCurrentUser,
-  });
+const SignIn = () => {
+  const { refetch, loading, isLoggedIn } = useGlobalContext();
 
-  // if (!loading && isLogged) return <Redirect href="/" />;
+  console.log("isloggedIn=>", isLoggedIn);
+  if (!loading && isLoggedIn) return <Redirect href="/" />;
 
   const handleLogin = async () => {
     const result = await login();
+
     if (result) {
+      console.log("login Success");
       refetch();
-      console.log(result);
     } else {
-      Alert.alert("Error", "Failed to login");
+      Alert.alert("Error", "Failed to login signIN");
     }
   };
 
-  console.log("user =>", user);
+  // # appwrite email : rohil01
+  // # google console email:rohil101
+
   return (
     <SafeAreaView className="bg-white h-full">
       <ScrollView
@@ -51,8 +49,8 @@ const Auth = () => {
         />
 
         <View className="px-10">
-          <Text className="text-base text-center uppercase ">
-            Welcome To Real Scout
+          <Text className="text-base text-center uppercase font-rubik text-black-200">
+            Welcome To Real Scout.
           </Text>
 
           <Text className="text-3xl font-rubik-bold text-black-300 text-center mt-2">
@@ -61,7 +59,7 @@ const Auth = () => {
           </Text>
 
           <Text className="text-lg font-rubik text-black-200 text-center mt-12">
-            Login to Real Scout with Google
+            Login with Google
           </Text>
 
           <TouchableOpacity
@@ -75,9 +73,12 @@ const Auth = () => {
                 resizeMode="contain"
               />
               <Text className="text-lg font-rubik-medium text-black-300 ml-2">
-                Continue with Google
+                Continue with Google auth
               </Text>
             </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={logout}>
+            <Text>Logout</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -85,4 +86,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default SignIn;
